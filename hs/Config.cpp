@@ -8,6 +8,7 @@
 
 #pragma comment(lib, "shlwapi.lib")
 
+#define CONFIG_INI "windbg_hilight.ini"
 static char g_ini_fn[MAX_PATH];
 
 static int ini_get_int(const char * sec, const char * vname, int defv)
@@ -35,7 +36,7 @@ bool CConfig::load()
 {
 	GetModuleFileNameA(0, g_ini_fn, MAX_PATH);
 	PathRemoveFileSpecA(g_ini_fn);
-	PathAppendA(g_ini_fn, "asm.ini");
+	PathAppendA(g_ini_fn, CONFIG_INI);
 
 #define READ_VALUE(x, default_value) \
     m_color[SCE_##x] = ini_get_int("color", #x, default_value);
