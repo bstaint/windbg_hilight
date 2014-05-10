@@ -7,18 +7,13 @@
 #include "SciLexer.h"
 #include "LexDbgCmd.h"
 #include "TextBuffer.h"
-#include "Config.h"
 #include "Manager.h"
-
-#include <map>
 
 #ifdef _WIN64
 #pragma comment(lib, "Detours_x64.lib")
 #else
 #pragma comment(lib, "Detours_x86.lib")
 #endif
-
-std::map<const char*, ILexer*> g_WndClassILex;
 
 EXTTEXTOUTW ExtTextOutW_Org = ExtTextOutW;
 

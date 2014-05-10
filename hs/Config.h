@@ -11,13 +11,15 @@ class CConfig
 public:
     COLORREF get_color(unsigned int index);
     const char* get_keywords(int index);
-    bool load();
-    void save();
 
 	static CConfig& get_instance();
+
 protected:
 	CConfig();
 	~CConfig();
+	bool load();
+	void save();
+
 private:
 	typedef std::map<unsigned int, COLORREF> MAP_COLOR;
 	typedef std::map<int, std::string> MAP_KEYWORDS;

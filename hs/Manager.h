@@ -15,7 +15,6 @@ public:
 
 	static CWndManager& getInstance();
 
-	// WND_TYPE
 	void AddWndToCache(HWND hWnd, WND_TYPE type);
 	bool IsCached(HWND hWnd);
 
@@ -25,7 +24,6 @@ protected:
 	CWndManager();
 	~CWndManager();
 
-
 	void DelWnd(HWND);
 	void RemoveHook(HWND);
 	static LRESULT CALLBACK
@@ -33,20 +31,18 @@ protected:
 
 	typedef std::map<HWND, int> MAP_WND;
 	MAP_WND m_hwnd;
-
 };
 
 class ILexer;
 class CLexManager
 {
 public:
-	static CLexManager& getInstance();
-
 	ILexer* getILexerDisassemblyWnd();
 	ILexer* getILexerCommandWnd();
 
-protected:
+	static CLexManager& getInstance();
 
+protected:
 	ILexer* getILexer(const char* name);
 
 	static const char* str_asm;

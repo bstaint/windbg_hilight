@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\WinDDK\7600.16385.1\Debuggers\sdk\inc;&quot;$(SolutionDir)/SciLexer/lexlib&quot;;&quot;$(SolutionDir)/SciLexer/include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/SciLexer/lexlib&quot;;&quot;$(SolutionDir)/SciLexer/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HS_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,8 +64,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(SolutionDir)\bin\hsd.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="D:\WinDDK\7600.16385.1\Debuggers\sdk\lib\i386"
+				AdditionalLibraryDirectories=""
 				ModuleDefinitionFile="extcpp.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -119,7 +120,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\WinDDK\7600.16385.1\Debuggers\sdk\inc;&quot;$(SolutionDir)/SciLexer/lexlib&quot;;&quot;$(SolutionDir)/SciLexer/include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/SciLexer/lexlib&quot;;&quot;$(SolutionDir)/SciLexer/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HS_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -139,8 +140,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(SolutionDir)\bin\hs64d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="D:\WinDDK\7600.16385.1\Debuggers\sdk\lib\i386"
+				AdditionalLibraryDirectories=""
 				ModuleDefinitionFile="extcpp.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -195,7 +197,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="D:\WinDDK\7600.16385.1\Debuggers\sdk\inc;&quot;$(SolutionDir)/SciLexer/lexlib&quot;;&quot;$(SolutionDir)/SciLexer/include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/SciLexer/lexlib&quot;;&quot;$(SolutionDir)/SciLexer/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HS_EXPORTS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -214,8 +216,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(SolutionDir)\bin\hs.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="D:\WinDDK\7600.16385.1\Debuggers\sdk\lib\i386"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -272,7 +275,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="D:\WinDDK\7600.16385.1\Debuggers\sdk\inc;&quot;$(SolutionDir)/SciLexer/lexlib&quot;;&quot;$(SolutionDir)/SciLexer/include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/SciLexer/lexlib&quot;;&quot;$(SolutionDir)/SciLexer/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HS_EXPORTS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -291,9 +294,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)\$(ProjectName)-x64.dll"
+				OutputFile="$(SolutionDir)\bin\hs64.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="D:\WinDDK\7600.16385.1\Debuggers\sdk\lib\i386"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"

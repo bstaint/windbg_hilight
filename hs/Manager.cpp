@@ -31,7 +31,8 @@ void CWndManager::AddWndToCache( HWND hWnd, WND_TYPE type)
 {
 	int which = type;
 	assert(which != 0);
-	// from D:\Program Files\Microsoft Visual Studio 9.0\VC\atlmfc\src\mfc\wincore.cpp
+
+	// from Microsoft Visual Studio 9.0\VC\atlmfc\src\mfc\wincore.cpp
 	WNDPROC oldWndProc;
 	oldWndProc = (WNDPROC)GetWindowLongPtr(hWnd, GWLP_WNDPROC);
 	if (oldWndProc != NULL && GetProp(hWnd, _afxOldWndProc) == NULL)
@@ -65,6 +66,7 @@ CWndManager::~CWndManager()
 		RemoveHook(it->first);
 		m_hwnd.erase(it++); // be careful!
 	}
+	m_hwnd.clear();
 }
 
 CWndManager& CWndManager::getInstance()
