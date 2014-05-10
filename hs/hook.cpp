@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include <windows.h>
 #include "detours.h"
-#include "engextcpp.hpp" // for g_ExtDllMain
 
 #include <assert.h>
 #include <string.h>
@@ -26,12 +25,9 @@
 #pragma comment(lib, "Detours_x86.lib")
 #endif
 
-//typedef BOOL (WINAPI *PEXT_DLL_MAIN)
-//(HANDLE Instance, ULONG Reason, PVOID Reserved);
-
 EXTTEXTOUTW ExtTextOutW_Org = ExtTextOutW;
 
-BOOL WINAPI ExtTextOutW_Hook(  HDC hdc,          // handle to DC
+BOOL WINAPI ExtTextOutW_Hook(HDC hdc,          // handle to DC
                 int X,            // x-coordinate of reference point
                 int Y,            // y-coordinate of reference point
                 UINT fuOptions,   // text-output options
@@ -52,7 +48,6 @@ BOOL WINAPI ExtTextOutW_Hook(  HDC hdc,          // handle to DC
     if (GetTextColor(hdc) == 0x0FFFFFF)
     {
         return ExtTextOutW_Org(hdc, X, Y, fuOptions, lprc, lpString, cbCount, lpDx);
-
     }
     else
     {
@@ -170,22 +165,20 @@ BOOL WINAPI ExtTextOutW_Hook(  HDC hdc,          // handle to DC
     return FALSE;
 }
 
-BOOL WINAPI
-MyDllMain(HANDLE Instance, ULONG Reason, PVOID Reserved)
+struct st_iu_hooks
 {
-    switch(Reason)
-    {
-    case DLL_PROCESS_ATTACH:
-        DisableThreadLibraryCalls((HMODULE)Instance);
-        //ExtExtension::s_Module = (HMODULE)Instance;
-        DetourTransactionBegin();
-        DetourUpdateThread(GetCurrentThread());
-        DetourAttach(&(PVOID&)ExtTextOutW_Org, ExtTextOutW_Hook);
-        DetourTransactionCommit();
-        break;
-    }
-    return TRUE;
-}
-
-// 既然使用类，那么会在DllMain之类对类进行初始化，所以不必担心
-ExtSetDllMain a(MyDllMain); // 这个很有技巧！engextcpp.cpp中定义了g_ExtDllMain，但是又想别的地方定义它
+	st_iu_hooks()
+	{
+		DetourTransactionBegin();
+		DetourUpdateThread(GetCurrentThread());
+		DetourAttach(&(PVOID&)ExtTextOutW_Org, ExtTextOutW_Hook);
+		DetourTransactionCommit();
+	}
+	~st_iu_hooks()
+	{
+		DetourTransactionBegin();
+		DetourUpdateThread(GetCurrentThread());
+		DetourDetach(&(PVOID&)ExtTextOutW_Org, ExtTextOutW_Hook);
+		DetourTransactionCommit();
+	}
+}g_iu_hook;

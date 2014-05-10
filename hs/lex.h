@@ -4,7 +4,7 @@
 #include "ILexer.h"
 #include <string>
 
-typedef BOOL (WINAPI* EXTTEXTOUTW)(  HDC hdc,          // handle to DC
+typedef BOOL (WINAPI* EXTTEXTOUTW)(HDC hdc,          // handle to DC
                                    int X,            // x-coordinate of reference point
                                    int Y,            // y-coordinate of reference point
                                    UINT fuOptions,   // text-output options

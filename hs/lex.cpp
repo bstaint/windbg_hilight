@@ -30,7 +30,7 @@ void SCI_METHOD CText::SetErrorStatus( int status )
 int SCI_METHOD CText::Length() const
 {
     //return m_cbCount;
-    return str_.size();
+    return (int)str_.size();
 }
 
 void SCI_METHOD CText::GetCharRange( char *buffer, int position, int lengthRetrieve ) const

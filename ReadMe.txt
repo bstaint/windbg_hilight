@@ -2,6 +2,9 @@ feature:
 windbg文本高亮，支持x64
 
 changelog:
+2014年5月10日：
+add patch by goldenegg: 去除对boost的依赖，允许dll卸载(2013-4-30)。
+
 2013年4月26日
 增加地址、opcode、jumpcall指令的颜色设置
 增加命令窗口用户输入的颜色设置(只是简单地对>后的文字进行加色)

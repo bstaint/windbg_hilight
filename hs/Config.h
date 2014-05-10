@@ -4,11 +4,11 @@
 #include <string>
 #include <map>
 
-
-
-#define WND_OTHER 10
-#define WND_ASM 1
-#define WND_COMMAND 2
+enum {
+	WND_ASM=1,
+	WND_COMMAND=2,
+	WND_OTHER=10,
+};
 
 class CConfig
 {
@@ -22,6 +22,7 @@ class CConfig
 
 public:
     CConfig();
+	~CConfig();
     static CConfig& get_instance()
     {
         static CConfig c;
@@ -29,8 +30,8 @@ public:
     }
     COLORREF get_color(unsigned int index);
     const char* get_keywords(int index);
-    bool load(const std::string &filename);
-    void save(const std::string &filename);
+    bool load();
+    void save();
 
     void AddWndCache(HWND hWnd, int which);
     // »˝Ã¨£¨0£∫Œ¥…Ë÷√£¨ 1:Disassembly£¨ 2:Command
