@@ -1,9 +1,7 @@
 #include "StdAfx.h"
 #include <shlwapi.h>
-#include <tchar.h>
-#include <assert.h>
-#include "Config.h"
 
+#include "Config.h"
 #include "SciLexer.h"
 #include "LexAsm.h"
 #include "LexDbgCmd.h"
@@ -67,7 +65,8 @@ bool CConfig::load()
     READ_VALUE(DBGCMD_CMD, 0xff);
     READ_VALUE(DBGCMD_CMD_CHAR, 0x0);
 
-    // from E:\src\c\npp\PowerEditor\src\langs.model.xml
+    // from notepad++ langs.model.xml
+	// add x64 registers from http://sourceforge.net/p/scintilla/scite/ci/default/tree/src/asm.properties
 	/*cpuInstruction*/m_keywords[0] = ini_get_str("keywords","cpuInstruction", 
 		"aaa aad aam aas adc add and call cbw clc cld cli cmc cmp cmps "
 		"cmpsb cmpsw cwd daa das dec div esc hlt idiv imul in inc int "
@@ -116,7 +115,15 @@ bool CConfig::load()
 		"dr1 dr2 dr3 dr6 dr7 ds dx eax ebp ebx ecx edi edx es esi esp "
 		"fs gs si sp ss st tr3 tr4 tr5 tr6 tr7 st0 st1 st2 st3 st4 st5 "
 		"st6 st7 mm0 mm1 mm2 mm3 mm4 mm5 mm6 mm7 xmm0 xmm1 xmm2 xmm3 "
-		"xmm4 xmm5 xmm6 xmm7"
+		"xmm4 xmm5 xmm6 xmm7 "
+		"sil dil bpl "
+		"r8b r9b r10b r11b r12b r13b r14b r15b "
+		"r8w r9w r10w r11w r12w r13w r14w r15w "
+		"rax rcx rdx rbx rsp rbp rsi rdi "
+		"r8 r9 r10 r11 r12 r13 r14 r15 "
+		"xmm8 xmm9 xmm10 xmm11 xmm12 xmm13 xmm14 xmm15 "
+		"ymm8 ymm9 ymm10 ymm11 ymm12 ymm13 ymm14 ymm15 "
+		"gs"
 		);    
     /*directive*/m_keywords[3] = ini_get_str("keywords","directive",
 		".186 .286 .286c .286p .287 .386 .386c .386p .387 .486 .486p "
@@ -261,12 +268,7 @@ CConfig::CConfig()
 }
 CConfig::~CConfig()
 {
-	for (MAP_WND::const_iterator it = m_hwnd.begin()
-		; it != m_hwnd.end()
-		; ++it)
-	{
-		DelWnd(it->first);
-	}
+
 }
 
 const char* CConfig::get_keywords( int index )
@@ -274,54 +276,8 @@ const char* CConfig::get_keywords( int index )
     return m_keywords[index].c_str();
 }
 
-static const TCHAR _afxOldWndProc[] = _T("AfxOldWndProc456");
-
-LRESULT CALLBACK CConfig::_AfxActivationWndProc(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam)
+CConfig& CConfig::get_instance()
 {
-	WNDPROC oldWndProc = (WNDPROC)::GetProp(hWnd, _afxOldWndProc);
-	if (nMsg == WM_NCDESTROY)
-	{
-		CConfig_Single.DelWnd(hWnd);
-	}
-	return  CallWindowProc(oldWndProc, hWnd, nMsg, wParam, lParam);
-}
-void CConfig::AddWndCache( HWND hWnd, int which )
-{
-    assert(which != 0);
-    // from D:\Program Files\Microsoft Visual Studio 9.0\VC\atlmfc\src\mfc\wincore.cpp
-    WNDPROC oldWndProc;
-    oldWndProc = (WNDPROC)GetWindowLongPtr(hWnd, GWLP_WNDPROC);
-    if (oldWndProc != NULL && GetProp(hWnd, _afxOldWndProc) == NULL)
-    {
-        SetProp(hWnd, _afxOldWndProc, oldWndProc);
-        if ((WNDPROC)GetProp(hWnd, _afxOldWndProc) == oldWndProc)
-        {
-            SetWindowLongPtr(hWnd, GWLP_WNDPROC, (DWORD_PTR)_AfxActivationWndProc);
-            m_hwnd[hWnd] = which;
-        }
-    }
-}
-
-int CConfig::WhichWnd( HWND hWnd )
-{
-    MAP_WND::const_iterator ci = m_hwnd.find(hWnd);
-    if (ci == m_hwnd.end())
-    {
-        return 0;
-    }
-    else
-    {
-		return ci->second;
-    }
-}
-
-void CConfig::DelWnd( HWND hWnd)
-{
-	WNDPROC oldWndProc = (WNDPROC)::GetProp(hWnd, _afxOldWndProc);
-	if (oldWndProc)
-	{
-		SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<INT_PTR>(oldWndProc));
-		RemoveProp(hWnd, _afxOldWndProc);
-	}
-	m_hwnd.erase(hWnd);
+	static CConfig c;
+	return c;
 }

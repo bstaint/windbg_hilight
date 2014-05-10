@@ -3,27 +3,22 @@
 #include "detours.h"
 
 #include <assert.h>
-#include <string.h>
 
-#include "ILexer.h"
-#include "Scintilla.h"
 #include "SciLexer.h"
-
-#include "LexAccessor.h"
-#include "Accessor.h"
-#include "LexerModule.h"
-
-#include "..\SciLexer\src\Catalogue.h"
-#include "lex.h"
-#include "Config.h"
-#include "LexAsm.h"
 #include "LexDbgCmd.h"
+#include "TextBuffer.h"
+#include "Config.h"
+#include "Manager.h"
+
+#include <map>
 
 #ifdef _WIN64
 #pragma comment(lib, "Detours_x64.lib")
 #else
 #pragma comment(lib, "Detours_x86.lib")
 #endif
+
+std::map<const char*, ILexer*> g_WndClassILex;
 
 EXTTEXTOUTW ExtTextOutW_Org = ExtTextOutW;
 
@@ -58,11 +53,11 @@ BOOL WINAPI ExtTextOutW_Hook(HDC hdc,          // handle to DC
             return ExtTextOutW_Org(hdc, X, Y, fuOptions, lprc, lpString, cbCount, lpDx);
         }
 
-        int wndclass = CConfig_Single.WhichWnd(hWnd); // 是否在窗口句柄缓存中
-        if (wndclass == 0) // 没有处理过
+		int WndType = 0;
+        if (!theWndManager.IsCached(hWnd))
         {
             HWND hParent = GetParent(hWnd);
-            wndclass = WND_OTHER; // other
+			WndType = CWndManager::WND_OTHER; // other
             do 
             {
                 char sname[100];
@@ -72,95 +67,76 @@ BOOL WINAPI ExtTextOutW_Hook(HDC hdc,          // handle to DC
                     GetWindowTextA(hParent, sname, sizeof(sname));
                     if (0 == _strnicmp(sname, "Disassembly", 11)) // 通常是 Disassembly - WinDbg:6.12.0002.633 X86 
                     {
-                        wndclass = WND_ASM;
+                        WndType = CWndManager::WND_Disassembly;
                         break;
                     }
                     else if(0 == _strnicmp(sname, "Command", 7))
                     {
-                        wndclass = WND_COMMAND;
+                        WndType = CWndManager::WND_COMMAND;
                         break;
                     }
                 }
                 hParent = GetParent(hParent);
             } while (hParent);
 
-            CConfig_Single.AddWndCache(hWnd, wndclass); // 添加到缓存中
+			theWndManager.AddWndToCache(hWnd, (CWndManager::WND_TYPE)WndType); // 添加到缓存中
         }
+		WndType = theWndManager.GetType(hWnd);
 
-        if (WND_OTHER == wndclass)
+        if ((WndType == 0) || (CWndManager::WND_OTHER == WndType))
         {
             return ExtTextOutW_Org(hdc, X, Y, fuOptions, lprc, lpString, cbCount, lpDx);
         }
 
         // Disassembly窗口
-        if (WND_ASM == wndclass)
+        if (CWndManager::WND_Disassembly == WndType)
         {
-            const LexerModule *lex = Catalogue::Find("asm");
-            if (lex)
-            {
-                ILexer* p = lex->Create();
+			ILexer* p = theLexManager.getILexerDisassemblyWnd();
+			assert(p != NULL);
 
-                // 添加关键字
-                for(int i = 0; i< 7; ++i)
-                {
-                    p->WordListSet(i, CConfig_Single.get_keywords(i));
-                }
+			static CTextBuffer::hook_data hd;
+			hd.hdc = hdc;
+			hd.X = X;
+			hd.Y = Y;
+			hd.fuOptions = fuOptions;
+			hd.lprc = lprc;
+			hd.lpString = lpString;
+			hd.cbCount = cbCount;
+			hd.lpDx = lpDx;
+			hd.ExtTextOutW_Org = ExtTextOutW_Org;
 
-                CText::hook_data hd;
-                hd.hdc = hdc;
-                hd.X = X;
-                hd.Y = Y;
-                hd.fuOptions = fuOptions;
-                hd.lprc = lprc;
-                hd.lpString = lpString;
-                hd.cbCount = cbCount;
-                hd.lpDx = lpDx;
-                hd.ExtTextOutW_Org = ExtTextOutW_Org;
+			static class CTextBuffer c;
+			c.SetHookData(hd);
 
-                class CText c(&hd);
+			// 该函数在SetStyles中自己显示
+			p->Lex(0, cbCount, SCE_ASM_DEFAULT, &c);
+			return TRUE;
+		}
 
-                // 该函数在SetStyles中自己显示
-                p->Lex(0, cbCount, SCE_ASM_DEFAULT, &c);
-                return TRUE;
-            }
-            else
-                return ExtTextOutW_Org(hdc, X, Y, fuOptions, lprc, lpString, cbCount, lpDx);
-        }
+		// Command窗口
+		if (CWndManager::WND_COMMAND == WndType)
+		{
+			ILexer* p = theLexManager.getILexerCommandWnd();
+			assert(p != NULL);
 
-        // Command窗口
-        if (WND_COMMAND == wndclass)
-        {
-            const LexerModule *lex = Catalogue::Find("WindbgCmd");
-            if (lex)
-            {
-                ILexer* p = lex->Create();
+			static CTextBuffer::hook_data hd;
+			hd.hdc = hdc;
+			hd.X = X;
+			hd.Y = Y;
+			hd.fuOptions = fuOptions;
+			hd.lprc = lprc;
+			hd.lpString = lpString;
+			hd.cbCount = cbCount;
+			hd.lpDx = lpDx;
+			hd.ExtTextOutW_Org = ExtTextOutW_Org;
 
-                //// 添加关键字
-                //for(int i = 0; i< 6; ++i)
-                //{
-                //    p->WordListSet(i, CConfig_Single.get_keywords(i));
-                //}
+			static class CTextBuffer c;
+			c.SetHookData(hd);
 
-                CText::hook_data hd;
-                hd.hdc = hdc;
-                hd.X = X;
-                hd.Y = Y;
-                hd.fuOptions = fuOptions;
-                hd.lprc = lprc;
-                hd.lpString = lpString;
-                hd.cbCount = cbCount;
-                hd.lpDx = lpDx;
-                hd.ExtTextOutW_Org = ExtTextOutW_Org;
-
-                class CText c(&hd);
-
-                // 该函数在SetStyles中自己显示
-                p->Lex(0, cbCount, SCE_DBGCMD_DEFAULT, &c);
-                return TRUE;
-            }
-            else
-                return ExtTextOutW_Org(hdc, X, Y, fuOptions, lprc, lpString, cbCount, lpDx);
-        }
+			// 该函数在SetStyles中自己显示
+			p->Lex(0, cbCount, SCE_DBGCMD_DEFAULT, &c);
+			return TRUE;
+		}
     }
     return FALSE;
 }

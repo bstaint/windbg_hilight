@@ -15,7 +15,7 @@ typedef BOOL (WINAPI* EXTTEXTOUTW)(HDC hdc,          // handle to DC
                                    );
 
 // 该类只是参考类，该类并不支持unicode(utf-16)，其他utf8和gbk之类也许支持很好，但没测试过
-class CText : public IDocument
+class CTextBuffer : public IDocument
 {
 public:
     struct hook_data
@@ -31,7 +31,8 @@ public:
         EXTTEXTOUTW ExtTextOutW_Org;
     };
 
-    CText(const hook_data* hd);
+    CTextBuffer();
+	void SetHookData(const hook_data& hd);
     virtual int SCI_METHOD Version() const;
     virtual void SCI_METHOD SetErrorStatus(int status);
     virtual int SCI_METHOD Length() const;

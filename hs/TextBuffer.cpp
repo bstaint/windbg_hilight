@@ -13,38 +13,38 @@
 
 #include "Platform.h"
 #include "..\SciLexer\src\Catalogue.h"
-#include "lex.h"
+#include "TextBuffer.h"
 #include <vector>
 #include "Config.h"
 
-int SCI_METHOD CText::Version() const
+int SCI_METHOD CTextBuffer::Version() const
 {
     return 0;
 }
 
-void SCI_METHOD CText::SetErrorStatus( int status )
+void SCI_METHOD CTextBuffer::SetErrorStatus( int status )
 {
 
 }
 
-int SCI_METHOD CText::Length() const
+int SCI_METHOD CTextBuffer::Length() const
 {
     //return m_cbCount;
     return (int)str_.size();
 }
 
-void SCI_METHOD CText::GetCharRange( char *buffer, int position, int lengthRetrieve ) const
+void SCI_METHOD CTextBuffer::GetCharRange( char *buffer, int position, int lengthRetrieve ) const
 {
     //memcpy(buffer, (unsigned char*)m_lpString + position, lengthRetrieve);
     memcpy(buffer, str_.c_str() + position, lengthRetrieve);
 }
 
-char SCI_METHOD CText::StyleAt( int position ) const
+char SCI_METHOD CTextBuffer::StyleAt( int position ) const
 {
     return 'a';
 }
 
-int SCI_METHOD CText::LineFromPosition( int position ) const
+int SCI_METHOD CTextBuffer::LineFromPosition( int position ) const
 {
     if (0 == position)
     {
@@ -66,7 +66,7 @@ int SCI_METHOD CText::LineFromPosition( int position ) const
     return 0;
 }
 
-int SCI_METHOD CText::LineStart( int line ) const
+int SCI_METHOD CTextBuffer::LineStart( int line ) const
 {
     do
     {
@@ -84,37 +84,37 @@ int SCI_METHOD CText::LineStart( int line ) const
     return line;
 }
 
-int SCI_METHOD CText::GetLevel( int line ) const
+int SCI_METHOD CTextBuffer::GetLevel( int line ) const
 {
     return 0;
 }
 
-int SCI_METHOD CText::SetLevel( int line, int level )
+int SCI_METHOD CTextBuffer::SetLevel( int line, int level )
 {
     return 0;
 }
 
-int SCI_METHOD CText::GetLineState( int line ) const
+int SCI_METHOD CTextBuffer::GetLineState( int line ) const
 {
     return 0;
 }
 
-int SCI_METHOD CText::SetLineState( int line, int state )
+int SCI_METHOD CTextBuffer::SetLineState( int line, int state )
 {
     return 0;
 }
 
-void SCI_METHOD CText::StartStyling( int position, char mask )
+void SCI_METHOD CTextBuffer::StartStyling( int position, char mask )
 {
 
 }
 
-bool SCI_METHOD CText::SetStyleFor( int length, char style )
+bool SCI_METHOD CTextBuffer::SetStyleFor( int length, char style )
 {
     return true;
 }
 
-bool SCI_METHOD CText::SetStyles( int length, const char *styles )
+bool SCI_METHOD CTextBuffer::SetStyles( int length, const char *styles )
 {
     const char* pForward = styles;
     const char* pPrev = styles;
@@ -127,7 +127,7 @@ bool SCI_METHOD CText::SetStyles( int length, const char *styles )
             LPCWSTR lpString = m_hd.lpString + (pPrev - styles);
             UINT cbCount = pForward - pPrev;
 
-            COLORREF old = SetTextColor(m_hd.hdc, CConfig_Single.get_color((unsigned int)*pPrev));
+            COLORREF old = SetTextColor(m_hd.hdc, theConfig.get_color((unsigned int)*pPrev));
             m_hd.ExtTextOutW_Org(m_hd.hdc, m_hd.X, m_hd.Y, m_hd.fuOptions, m_hd.lprc
                 , lpString
                 , cbCount
@@ -144,39 +144,39 @@ bool SCI_METHOD CText::SetStyles( int length, const char *styles )
     return true;
 }
 
-void SCI_METHOD CText::DecorationSetCurrentIndicator( int indicator )
+void SCI_METHOD CTextBuffer::DecorationSetCurrentIndicator( int indicator )
 {
 
 }
 
-void SCI_METHOD CText::DecorationFillRange( int position, int value, int fillLength )
+void SCI_METHOD CTextBuffer::DecorationFillRange( int position, int value, int fillLength )
 {
 
 }
 
-void SCI_METHOD CText::ChangeLexerState( int start, int end )
+void SCI_METHOD CTextBuffer::ChangeLexerState( int start, int end )
 {
 
 }
 
 // 经测试是unicode，即utf-16le
-int SCI_METHOD CText::CodePage() const
+int SCI_METHOD CTextBuffer::CodePage() const
 {
     // ExtTextOutW是unicode
     return 0; // LexAccessor构造函数
 }
 
-bool SCI_METHOD CText::IsDBCSLeadByte( char ch ) const
+bool SCI_METHOD CTextBuffer::IsDBCSLeadByte( char ch ) const
 {
     return Platform::IsDBCSLeadByte(CodePage(), ch);
 }
 
-const char * SCI_METHOD CText::BufferPointer()
+const char * SCI_METHOD CTextBuffer::BufferPointer()
 {
     return NULL;
 }
 
-int SCI_METHOD CText::GetLineIndentation( int line )
+int SCI_METHOD CTextBuffer::GetLineIndentation( int line )
 {
     return 0;
 }
@@ -194,11 +194,16 @@ static std::string wstring2string(const std::wstring & rwString, UINT codepage)
         return "";
 }
 
-CText::CText(const hook_data* hd)
+CTextBuffer::CTextBuffer()
 //: m_lpString(lpString)
 //, m_cbCount(cbCount)
 {
-    m_hd = *hd;
-    std::wstring wstr(m_hd.lpString, m_hd.lpString + m_hd.cbCount);
-    str_ = wstring2string(wstr, CP_ACP);
+
+}
+
+void CTextBuffer::SetHookData(const hook_data& hd)
+{
+	m_hd = hd;
+	std::wstring wstr(m_hd.lpString, m_hd.lpString + m_hd.cbCount);
+	str_ = wstring2string(wstr, CP_ACP);
 }

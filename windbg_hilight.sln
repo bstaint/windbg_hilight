@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hs", "hs\hs.vcproj", "{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "windbg_hilight", "hs\hs.vcproj", "{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SciLexer", "SciLexer\SciLexer.vcproj", "{D70A97C9-00D6-41B8-A63A-E960089DC44F}"
 EndProject
@@ -15,8 +15,8 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}.Debug|Win32.Build.0 = Debug|Win32
+		{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}.Debug|Win32.ActiveCfg = Debug|x64
+		{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}.Debug|Win32.Build.0 = Debug|x64
 		{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}.Debug|x64.ActiveCfg = Debug|x64
 		{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}.Release|Win32.ActiveCfg = Release|Win32
 		{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}.Release|Win32.Build.0 = Release|Win32

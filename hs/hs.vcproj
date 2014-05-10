@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="hs"
+	Name="windbg_hilight"
 	ProjectGUID="{A04D37E4-413B-4DD0-AC79-8A80A62CFBEB}"
 	RootNamespace="hs"
 	Keyword="Win32Proj"
@@ -384,10 +384,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\lex.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\LexAsm.cxx"
 				>
 				<FileConfiguration
@@ -428,6 +424,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Manager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -463,6 +463,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\TextBuffer.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
@@ -478,10 +482,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\lex.h"
-				>
-			</File>
-			<File
 				RelativePath=".\LexAsm.h"
 				>
 			</File>
@@ -490,11 +490,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Manager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TextBuffer.h"
 				>
 			</File>
 		</Filter>
