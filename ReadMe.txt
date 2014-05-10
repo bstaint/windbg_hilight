@@ -35,7 +35,8 @@ fixed issues Memory Leak, add register syntax for x64
 首个版本发布，暂时只有Disassembly窗口的高亮
 
 greets:
-感谢linx2008开发高亮插件，但他没有x64版本，http://hi.baidu.com/linx2008/item/0bee3aedc6d49e275b2d6441
+感谢linx2008，开发高亮插件，但没有x64版本，http://hi.baidu.com/linx2008/item/0bee3aedc6d49e275b2d6441
+感谢goldenegg，解决.unload崩溃，以及去掉boost和windbg sdk依赖
 
 by lynnux
 CopyRight (C) 2013-2014
