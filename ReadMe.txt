@@ -2,6 +2,9 @@ feature:
 windbg汇编和命令窗口文本高亮插件，支持x86和x64
 A windbg plugin to hiligth text in Disassembly and Command windows. Support x86 and x64.
 
+下载download:
+http://pan.baidu.com/s/1gd3i8i3
+
 使用方法：
 将hs.dll放入32位windbg的安装目录，hs64.dll放入64位(x64)windbg的安装目录，
 运行windbg，输入命令
