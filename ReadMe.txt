@@ -3,17 +3,17 @@ windbg汇编和命令窗口文本高亮插件，支持x86和x64
 A windbg plugin to hiligth text in Disassembly and Command windows. Support x86 and x64.
 
 使用方法：
-将hs.dll放入32位windbg的安装目录，hs-x64.dll放入64位(x64)windbg的安装目录，
+将hs.dll放入32位windbg的安装目录，hs64.dll放入64位(x64)windbg的安装目录，
 运行windbg，输入命令
 .load hs
 64位是
-.load hs-x64
+.load hs64
 
 how to work:
 please put the dll file in to windbg installed directory.
 .load hs.dll
 or x64:
-.load hs-x64.dll
+.load hs64.dll
 
 note:
 如果你想自定义syntax颜色，只需要以管理员权限运行windbg并加载windbg_hilight插件，这样会在windbg的安装目录里产生一个windbg_hilight.ini，参考http://www.w3schools.com/tags/ref_colorpicker.asp获取你想要的颜色，并转成十进值填写到ini中。
