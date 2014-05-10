@@ -19,7 +19,7 @@ or x64:
 .load hs64.dll
 
 note:
-如果你想自定义syntax颜色，只需要以管理员权限运行windbg并加载windbg_hilight插件，这样会在windbg的安装目录里产生一个windbg_hilight.ini，参考http://www.w3schools.com/tags/ref_colorpicker.asp获取你想要的颜色，并转成十进值填写到ini中。
+如果你想自定义syntax颜色，只需要以管理员权限运行windbg并加载windbg_hilight插件，这样会在windbg的安装目录里产生一个windbg_hilight.ini，参考http://www.w3schools.com/tags/ref_colorpicker.asp 获取你想要的颜色，并转成十进值填写到ini中。
 If you want to customize the syntax color, please run windbg in administrator privileage and .load windbg_hilight.dll, then you will get windbg_hilight.ini in windbg installed diretory, change the value in color section, please refer http://www.w3schools.com/tags/ref_colorpicker.asp to get the hex color value and write the corresponding decimal value.
 
 changelog:
