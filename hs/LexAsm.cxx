@@ -246,6 +246,8 @@ int SCI_METHOD LexerAsm::WordListSet(int n, const char *wl) {
 	return firstModification;
 }
 
+#include "Config.h"
+#include <DbgEng.h>
 void SCI_METHOD LexerAsm::Lex(unsigned int startPos, int length, int initStyle, IDocument *pAccess) {
 	LexAccessor styler(pAccess);
 
@@ -302,7 +304,10 @@ void SCI_METHOD LexerAsm::Lex(unsigned int startPos, int length, int initStyle, 
                         bAddressReaded = true;
                         sc.ChangeState(SCE_ASM_ADDRESS);
                         sc.SetState(SCE_ASM_DEFAULT);
-                        sc.ForwardSetState(SCE_ASM_OPCODE);
+						if (!(theConfig.GetAssemblyOptions() & DEBUG_ASMOPT_NO_CODE_BYTES))
+						{
+							sc.ForwardSetState(SCE_ASM_OPCODE);
+						}
                     }
                     else
                         sc.SetState(SCE_ASM_DEFAULT);
@@ -390,7 +395,10 @@ void SCI_METHOD LexerAsm::Lex(unsigned int startPos, int length, int initStyle, 
 		    if (sc.ch == ' ')
 		    {
                 sc.SetState(SCE_ASM_DEFAULT);
-                sc.ForwardSetState(SCE_ASM_OPCODE);
+				if (!(theConfig.GetAssemblyOptions() & DEBUG_ASMOPT_NO_CODE_BYTES))
+				{
+					sc.ForwardSetState(SCE_ASM_OPCODE);
+				}
 		    }
             //if (sc.ch == '!') // 有时候会出现单独一行如，ntdll!LdrGetFailureData:
             //{
