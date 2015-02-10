@@ -14,13 +14,13 @@ http://pan.baidu.com/s/1gd3i8i3
 
 how to work:
 please put the dll file in to windbg installed directory.
-.load hs.dll
+.load hs
 or x64:
-.load hs64.dll
+.load hs64
 
 note:
 如果你想自定义syntax颜色，只需要以管理员权限运行windbg并加载windbg_hilight插件，这样会在windbg的安装目录里产生一个windbg_hilight.ini，参考http://www.w3schools.com/tags/ref_colorpicker.asp 获取你想要的颜色，并转成十进值填写到ini中。
-If you want to customize the syntax color, please run windbg in administrator privileage and .load windbg_hilight.dll, then you will get windbg_hilight.ini in windbg installed diretory, change the value in color section, please refer http://www.w3schools.com/tags/ref_colorpicker.asp to get the hex color value and write the corresponding decimal value.
+If you want to customize the color of syntax, please run windbg in administrator privileage and .load hs(64), then you will get windbg_hilight.ini in windbg installed diretory. Change the value in color section, please refer http://www.w3schools.com/tags/ref_colorpicker.asp to get the hex color value and write the corresponding decimal value.
 
 changelog:
 2014年5月10日：
@@ -39,5 +39,5 @@ greets:
 感谢goldenegg，解决.unload崩溃，以及去掉boost和windbg sdk依赖
 
 by lynnux
-CopyRight (C) 2013-2014
-started from 2013年4月25日
+CopyRight (C) 2013-2015
+started from 2013/4/25

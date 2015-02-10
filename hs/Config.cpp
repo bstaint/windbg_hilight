@@ -282,3 +282,18 @@ CConfig& CConfig::get_instance()
 	static CConfig c;
 	return c;
 }
+
+#include <DbgEng.h>
+extern IDebugControl3* gIDebugControl3;
+ULONG CConfig::GetAssemblyOptions()
+{
+    if (gIDebugControl3)
+    {
+        ULONG options;
+        if(SUCCEEDED(gIDebugControl3->GetAssemblyOptions(&options)))
+        {
+            return options;
+        }
+    }
+    return 0;
+}

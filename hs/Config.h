@@ -11,6 +11,7 @@ class CConfig
 public:
     COLORREF get_color(unsigned int index);
     const char* get_keywords(int index);
+    ULONG GetAssemblyOptions();
 
 	static CConfig& get_instance();
 
